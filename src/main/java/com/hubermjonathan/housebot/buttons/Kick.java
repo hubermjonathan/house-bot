@@ -2,28 +2,33 @@ package com.hubermjonathan.housebot.buttons;
 
 import com.hubermjonathan.housebot.Constants;
 import com.hubermjonathan.housebot.models.Button;
+import net.dv8tion.jda.api.entities.Category;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.VoiceChannel;
-import redis.clients.jedis.Jedis;
 
 public class Kick extends Button {
-    Jedis jedis;
-
     public Kick(String name) {
         super(name);
-
-        this.jedis = Constants.JEDIS;
     }
 
     @Override
     public void execute() throws Exception {
-        VoiceChannel voiceChannel = getEvent().getGuild().getVoiceChannelById(jedis.get(getEvent().getMember().getId()));
-        VoiceChannel newVoiceChannel = getEvent().getGuild().getVoiceChannelById(jedis.get(Constants.JEDIS_MAIN_VOICE_CHANNEL_ID));
+        Category category = getEvent().getChannel().getParent();
 
-        if (jedis.hget(voiceChannel.getId(), Constants.JEDIS_ROOM_BURNING).equals(Constants.TRUE)) return;
+        if (category.getTextChannels().get(0).getName().contains(Constants.FIRE)) {
+            throw new Exception();
+        }
 
-        for (Member member : voiceChannel.getMembers()) {
-            if (member.getId().equals(getEvent().getMember().getId())) continue;
+        VoiceChannel newVoiceChannel = null;
+        for (VoiceChannel voiceChannel : getEvent().getGuild().getVoiceChannels()) {
+            if (voiceChannel.getName().equals(Constants.MAIN_VOICE_CHANNEL_NAME)) {
+                newVoiceChannel = voiceChannel;
+                break;
+            }
+        }
+
+        for (Member member : category.getVoiceChannels().get(0).getMembers()) {
+            if (member.getId().equals(getOwner().getId())) continue;
             getEvent().getGuild().moveVoiceMember(member, newVoiceChannel).queue();
         }
     }

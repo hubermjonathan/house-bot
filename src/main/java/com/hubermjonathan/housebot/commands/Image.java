@@ -7,9 +7,8 @@ import net.dv8tion.jda.api.entities.Category;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 
-public class Name extends Command {
-
-    public Name(String command) {
+public class Image extends Command {
+    public Image(String command) {
         super(command);
     }
 
@@ -23,10 +22,14 @@ public class Name extends Command {
             }
         }
 
+        if (getEvent().getMessage().getAttachments().size() != 1 || !getEvent().getMessage().getAttachments().get(0).isImage()) {
+            getEvent().getMessage().addReaction(Constants.DENY).queue();
+            throw new Exception();
+        }
+
         Message roomMessage = category.getTextChannels().get(0).getHistory().retrievePast(1).complete().get(0);
         EmbedBuilder embedBuilder = new EmbedBuilder(roomMessage.getEmbeds().get(0));
-        embedBuilder.setTitle(String.join(" ", getArgs()));
+        embedBuilder.setImage(getEvent().getMessage().getAttachments().get(0).getUrl());
         roomMessage.editMessage(embedBuilder.build()).queue();
-        category.getVoiceChannels().get(0).getManager().setName(String.join(" ", getArgs())).queue();
     }
 }

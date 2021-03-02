@@ -8,7 +8,6 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
-import redis.clients.jedis.Jedis;
 
 import java.util.Arrays;
 
@@ -52,12 +51,17 @@ public abstract class Command extends ListenerAdapter {
         if (!tokens[0].equals(String.format("<@!%s>", channel.getJDA().getSelfUser().getId()))) return;
         if (tokens.length == 1) return;
         if (!tokens[1].equals(command)) return;
+        if (!channel.getName().equals(Constants.BOT_CHANNEL_NAME)) return;
 
-        Jedis jedis = Constants.JEDIS;
-        Role residentRole = event.getGuild().getRoleById(jedis.get(Constants.JEDIS_RESIDENT_ROLE_ID));
+        Role residentRole = null;
+        for (Role role : event.getGuild().getRoles()) {
+            if (role.getName().equals(Constants.RESIDENT_ROLE_NAME)) {
+                residentRole = role;
+                break;
+            }
+        }
 
-        if (!channel.getId().equals(jedis.get(Constants.JEDIS_BOT_CHANNEL_ID))) return;
-        if (!event.getMember().getRoles().contains(residentRole)) return;
+        if (residentRole == null || !event.getMember().getRoles().contains(residentRole)) return;
 
         setArgs(Arrays.copyOfRange(tokens, 2, tokens.length));
         setEvent(event);

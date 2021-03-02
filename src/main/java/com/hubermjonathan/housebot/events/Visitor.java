@@ -4,23 +4,26 @@ import com.hubermjonathan.housebot.Constants;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
-import redis.clients.jedis.Jedis;
 
 import java.time.OffsetDateTime;
 import java.util.TimerTask;
 
 public class Visitor extends TimerTask {
-    Jedis jedis;
     Guild guild;
 
     public Visitor(Guild guild) {
-        this.jedis = Constants.JEDIS;
         this.guild = guild;
     }
 
     @Override
     public void run() {
-        Role residentRole = guild.getRoleById(jedis.get(Constants.JEDIS_RESIDENT_ROLE_ID));
+        Role residentRole = null;
+        for (Role role : guild.getRoles()) {
+            if (role.getName().equals(Constants.RESIDENT_ROLE_NAME)) {
+                residentRole = role;
+                break;
+            }
+        }
 
         for (Member member : guild.loadMembers().get()) {
             if (member.getUser().isBot()) continue;
