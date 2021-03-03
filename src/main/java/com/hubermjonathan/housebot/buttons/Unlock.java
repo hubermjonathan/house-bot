@@ -22,7 +22,7 @@ public class Unlock extends Button {
 
         category.getVoiceChannels().get(0).getManager()
                 .clearOverridesAdded()
-                .putPermissionOverride(getEvent().getGuild().getPublicRole(), EnumSet.of(Permission.VOICE_CONNECT, Permission.VOICE_MOVE_OTHERS), null)
+                .putPermissionOverride(getEvent().getGuild().getPublicRole(), EnumSet.of(Permission.VOICE_CONNECT), null)
                 .queue();
     }
 }

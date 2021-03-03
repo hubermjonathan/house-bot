@@ -27,6 +27,9 @@ public class Room extends AdminCommand {
         }
 
         if (!member.getRoles().contains(residentRole)) {
+            if (!member.isOwner()) {
+                member.modifyNickname(getArgs()[1]).queue();
+            }
             guild.addRoleToMember(member, residentRole).queue();
 
             Category category = guild.createCategory(Constants.ROOMS_CATEGORY_NAME).complete();
@@ -35,23 +38,22 @@ public class Room extends AdminCommand {
                     .addRolePermissionOverride(guild.getPublicRole().getIdLong(), null, EnumSet.of(Permission.MESSAGE_WRITE))
                     .complete();
             category.createVoiceChannel(member.getEffectiveName() + "'s room")
-                    .addRolePermissionOverride(guild.getPublicRole().getIdLong(), null, EnumSet.of(Permission.VOICE_CONNECT, Permission.VOICE_MOVE_OTHERS))
-                    .addMemberPermissionOverride(member.getIdLong(), EnumSet.of(Permission.VOICE_CONNECT, Permission.VOICE_MOVE_OTHERS), null)
+                    .addRolePermissionOverride(guild.getPublicRole().getIdLong(), null, EnumSet.of(Permission.VOICE_CONNECT))
+                    .addMemberPermissionOverride(member.getIdLong(), EnumSet.of(Permission.VOICE_CONNECT), null)
                     .complete();
 
             EmbedBuilder embedBuilder = new EmbedBuilder();
             embedBuilder
                     .setTitle(member.getEffectiveName() + "'s room")
                     .setDescription("``` ```")
-                    .addField(Constants.ROOM_CONTROLS_TITLE, Constants.ROOM_CONTROLS_MESSAGE, false);
+                    .addField(Constants.ROOM_CONTROLS_TITLE, Constants.ROOM_CONTROLS_MESSAGE, true);
             Message message = textChannel.sendMessage(embedBuilder.build()).complete();
+            message.pin().queue();
             message.addReaction(Constants.KNOCK).queue();
             message.addReaction(Constants.LOCK).queue();
             message.addReaction(Constants.UNLOCK).queue();
             message.addReaction(Constants.KICK).queue();
             message.addReaction(Constants.FIRE).queue();
-
-            member.modifyNickname(getArgs()[1]).queue();
         } else {
             guild.removeRoleFromMember(member, residentRole).queue();
 

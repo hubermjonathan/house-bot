@@ -36,8 +36,8 @@ public class HouseFire extends Button {
 
                 voiceChannel.getManager()
                         .clearOverridesAdded()
-                        .putPermissionOverride(getEvent().getGuild().getPublicRole(), null, EnumSet.of(Permission.VOICE_CONNECT, Permission.VOICE_MOVE_OTHERS))
-                        .putPermissionOverride(getEvent().getMember(), null, EnumSet.of(Permission.VOICE_CONNECT, Permission.VOICE_MOVE_OTHERS))
+                        .putPermissionOverride(getEvent().getGuild().getPublicRole(), null, EnumSet.of(Permission.VOICE_CONNECT))
+                        .putPermissionOverride(getEvent().getMember(), null, EnumSet.of(Permission.VOICE_CONNECT))
                         .queue();
             }
         }, 1000 * 5);
@@ -46,8 +46,8 @@ public class HouseFire extends Button {
             public void run() {
                 voiceChannel.getManager()
                         .clearOverridesAdded()
-                        .putPermissionOverride(getEvent().getGuild().getPublicRole(), null, EnumSet.of(Permission.VOICE_CONNECT, Permission.VOICE_MOVE_OTHERS))
-                        .putPermissionOverride(getEvent().getMember(), EnumSet.of(Permission.VOICE_CONNECT, Permission.VOICE_MOVE_OTHERS), null)
+                        .putPermissionOverride(getEvent().getGuild().getPublicRole(), null, EnumSet.of(Permission.VOICE_CONNECT))
+                        .putPermissionOverride(getEvent().getMember(), EnumSet.of(Permission.VOICE_CONNECT), null)
                         .queue();
 
                 textChannel.getManager().setName(textChannel.getName().substring(2)).queue();

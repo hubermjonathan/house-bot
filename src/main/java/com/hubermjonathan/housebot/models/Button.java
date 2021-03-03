@@ -69,8 +69,7 @@ public abstract class Button extends ListenerAdapter {
 
             try {
                 execute();
-            } catch (Exception e) {
-                System.out.println(e);
+            } catch (Exception ignored) {
             }
         });
     }

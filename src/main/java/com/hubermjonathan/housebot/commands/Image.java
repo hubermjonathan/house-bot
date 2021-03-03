@@ -27,7 +27,7 @@ public class Image extends Command {
             throw new Exception();
         }
 
-        Message roomMessage = category.getTextChannels().get(0).getHistory().retrievePast(1).complete().get(0);
+        Message roomMessage = category.getTextChannels().get(0).retrievePinnedMessages().complete().get(0);
         EmbedBuilder embedBuilder = new EmbedBuilder(roomMessage.getEmbeds().get(0));
         embedBuilder.setImage(getEvent().getMessage().getAttachments().get(0).getUrl());
         roomMessage.editMessage(embedBuilder.build()).queue();

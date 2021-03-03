@@ -21,7 +21,7 @@ public class Text extends Command {
             }
         }
 
-        Message roomMessage = category.getTextChannels().get(0).getHistory().retrievePast(1).complete().get(0);
+        Message roomMessage = category.getTextChannels().get(0).retrievePinnedMessages().complete().get(0);
         EmbedBuilder embedBuilder = new EmbedBuilder(roomMessage.getEmbeds().get(0));
         embedBuilder.setDescription("```" + String.join(" ", getArgs()) + "```");
         roomMessage.editMessage(embedBuilder.build()).queue();

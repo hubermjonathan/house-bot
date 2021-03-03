@@ -22,7 +22,7 @@ public class Lock extends Button {
 
         category.getVoiceChannels().get(0).getManager()
                 .clearOverridesAdded()
-                .putPermissionOverride(getEvent().getGuild().getPublicRole(), null, EnumSet.of(Permission.VOICE_CONNECT, Permission.VOICE_MOVE_OTHERS))
+                .putPermissionOverride(getEvent().getGuild().getPublicRole(), null, EnumSet.of(Permission.VOICE_CONNECT))
                 .queue();
     }
 }

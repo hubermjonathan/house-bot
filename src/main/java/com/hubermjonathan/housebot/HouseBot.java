@@ -20,11 +20,15 @@ public class HouseBot {
         jda.awaitReady();
 
         jda.addEventListener(new Create("create"));
+        jda.addEventListener(new Emoji("emoji"));
         jda.addEventListener(new Image("image"));
         jda.addEventListener(new Name("name"));
         jda.addEventListener(new Room("room"));
         jda.addEventListener(new Text("text"));
 
+        jda.addEventListener(new Cancel(Constants.CANCEL, false));
+        jda.addEventListener(new Confirm(Constants.CONFIRM));
+        jda.addEventListener(new Deny(Constants.DENY));
         jda.addEventListener(new HouseFire(Constants.FIRE));
         jda.addEventListener(new Kick(Constants.KICK));
         jda.addEventListener(new Knock(Constants.KNOCK, false));

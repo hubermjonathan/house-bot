@@ -50,7 +50,6 @@ public class Create extends AdminCommand {
                 .setName(Constants.RESIDENT_ROLE_NAME)
                 .setColor(Integer.parseInt("02c39a", 16))
                 .setHoisted(true)
-                .setPermissions(Permission.VOICE_MOVE_OTHERS)
                 .complete();
 
         Category mainCategory = guild.createCategory(Constants.MAIN_CATEGORY_NAME).complete();
@@ -74,5 +73,6 @@ public class Create extends AdminCommand {
                 .setTopic(Constants.BOT_CHANNEL_TOPIC)
                 .complete();
         mainCategory.createVoiceChannel(Constants.MAIN_VOICE_CHANNEL_NAME).complete();
+        mainCategory.createVoiceChannel(Constants.MOVIE_VOICE_CHANNEL_NAME).complete();
     }
 }
