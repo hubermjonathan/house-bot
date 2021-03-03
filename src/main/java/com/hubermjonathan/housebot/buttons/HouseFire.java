@@ -40,7 +40,7 @@ public class HouseFire extends Button {
                         .putPermissionOverride(getEvent().getMember(), null, EnumSet.of(Permission.VOICE_CONNECT))
                         .queue();
             }
-        }, 1000 * 5);
+        }, 1000 * 60);
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -52,6 +52,6 @@ public class HouseFire extends Button {
 
                 textChannel.getManager().setName(textChannel.getName().substring(2)).queue();
             }
-        }, (1000 * 5) + (1000 * 5));
+        }, (1000 * 60) + (1000 * 60 * 25));
     }
 }
